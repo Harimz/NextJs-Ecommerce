@@ -3,6 +3,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Navbar } from "@/modules/shared/components/navbar";
+import { Overpass } from "next/font/google";
+import { Toaster as HotToaster } from "react-hot-toast";
+import { MdErrorOutline } from "react-icons/md";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { ThemeProvider } from "@/modules/shared/providers/theme-provider";
+
+const overpass = Overpass({ subsets: ["latin"], display: "swap" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,15 +32,46 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={overpass.className} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TRPCReactProvider>
-          <Navbar />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TRPCReactProvider>
+            <HotToaster
+              position="top-center"
+              toastOptions={{
+                error: {
+                  style: {
+                    background: "rgba(165, 0, 0, 0.65)",
+                    color: "white",
+                  },
+                  icon: <MdErrorOutline className="size-6 text-white" />,
+                },
+                success: {
+                  style: {
+                    background: "rgba(32, 232, 0, 0.56)",
+                    color: "white",
+                  },
+                },
+                loading: {
+                  icon: (
+                    <AiOutlineLoading3Quarters className="size-4 animate-spin" />
+                  ),
+                },
+              }}
+            />
 
-          {children}
-        </TRPCReactProvider>
+            <Navbar />
+
+            {children}
+          </TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

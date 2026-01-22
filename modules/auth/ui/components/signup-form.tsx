@@ -4,7 +4,9 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Controller, useForm } from "react-hook-form";
@@ -16,8 +18,14 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { FaGoogle } from "react-icons/fa";
+import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 export const SignUpForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -29,6 +37,8 @@ export const SignUpForm = () => {
   });
 
   const handleSubmit = async (values: RegisterInput) => {
+    setIsLoading(true);
+
     const { error } = await authClient.signUp.email({
       email: values.email,
       password: values.password,
@@ -39,18 +49,40 @@ export const SignUpForm = () => {
     if (error) {
       toast.error(error?.message || "Could not create account");
     }
+
+    setIsLoading(false);
   };
 
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardHeader className="text-2xl">Create an Account</CardHeader>
+        <CardTitle className="text-3xl">Create Your Account</CardTitle>
         <CardDescription>
-          Join the community and get to shopping
+          <span className="text-custom-primary">Sign up</span> to shop the
+          latest styles and track your orders.
         </CardDescription>
       </CardHeader>
 
       <CardContent>
+        <Button
+          variant="outline"
+          className="w-full cursor-pointer"
+          onClick={async () =>
+            await authClient.signIn.social({ provider: "google" })
+          }
+        >
+          <FaGoogle />
+        </Button>
+
+        <div className="relative my-10">
+          <Separator />
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="mt-1 rounded-md text-red px-3 text-sm text-custom-primary bg-card">
+              Or
+            </span>
+          </span>
+        </div>
+
         <form className="space-y-6" onSubmit={form.handleSubmit(handleSubmit)}>
           <Controller
             name="name"
@@ -139,11 +171,20 @@ export const SignUpForm = () => {
             )}
           />
 
-          <Button type="submit" className="w-full mt-6 cursor-pointer">
-            Sign Up
+          <Button type="submit" variant="primary" className="w-full mt-6">
+            {isLoading ? <Spinner /> : "Sign Up"}
           </Button>
         </form>
       </CardContent>
+
+      <CardFooter className="flex justify-center">
+        <p className="text-muted-foreground">
+          Already have an account?{" "}
+          <Link href="/login" passHref>
+            <span className="text-custom-primary underline">Login</span>
+          </Link>
+        </p>
+      </CardFooter>
     </Card>
   );
 };
