@@ -8,6 +8,13 @@
       "when": 1768976126538,
       "tag": "0000_big_thundra",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1769147310512,
+      "tag": "0001_lumpy_ser_duncan",
+      "breakpoints": true
     }
   ]
 }

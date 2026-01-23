@@ -8,6 +8,7 @@ import { Moon, Search, ShoppingCart, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { UserButton } from "@/modules/auth/ui/components/user-button";
 
 export const Navbar = () => {
   const { user } = useUser();
@@ -25,7 +26,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-20">
           <h1 className="font-bold text-xl">Sterling</h1>
 
-          <div className="relative w-[50rem]">
+          <div className="relative w-200">
             <Input placeholder="Search..." className="pl-10 w-full" />
             <Search className="text-muted-foreground absolute left-2.5 top-2.5 size-4" />
           </div>
@@ -66,7 +67,7 @@ export const Navbar = () => {
             </div>
           )}
 
-          {user && <Button onClick={() => authClient.signOut()}>Logout</Button>}
+          {user && <UserButton />}
         </div>
       </div>
     </nav>
