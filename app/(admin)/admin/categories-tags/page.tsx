@@ -1,11 +1,21 @@
 import { requireAdmin } from "@/lib/guards";
 import { CategoriesTagsView } from "@/modules/admin/ui/views/categories-tags-view";
+import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React from "react";
 
 const AdminCategoriesTags = async () => {
   await requireAdmin();
 
-  return <CategoriesTagsView />;
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery(trpc.admin.categories.list.queryOptions({}));
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CategoriesTagsView />
+    </HydrationBoundary>
+  );
 };
 
 export default AdminCategoriesTags;

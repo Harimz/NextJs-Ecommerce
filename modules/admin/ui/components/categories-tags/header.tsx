@@ -1,10 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FolderTree, Tags } from "lucide-react";
 import React from "react";
-import { CategoriesTab } from "./categories-tab";
-import { TagsTab } from "./tags-tab";
+import { CategoriesTab } from "./categories/categories-tab";
+import { TagsTab } from "./tags/tags-tab";
+import {
+  Category,
+  CategoryNode,
+} from "@/modules/admin/domains/categories-schemas";
 
-export const Header = () => {
+export const Header = ({ categories }: { categories: CategoryNode[] }) => {
   return (
     <div>
       <Tabs defaultValue="categories" className="space-y-6">
@@ -25,7 +29,7 @@ export const Header = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="categories" className="animate-fade-in">
-          <CategoriesTab />
+          <CategoriesTab categories={categories} />
         </TabsContent>
 
         <TabsContent value="tags" className="animate-fade-in">

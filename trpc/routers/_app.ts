@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "../init";
-import { adminRouter } from "@/modules/admin/server/router";
+import { adminRouter } from "@/modules/admin/server";
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
