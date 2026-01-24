@@ -13,6 +13,12 @@ import {
   primaryKey,
 } from "drizzle-orm/pg-core";
 
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+
 export const productTypeEnum = pgEnum("product_type", [
   "SHIRT",
   "PANTS",
@@ -158,6 +164,10 @@ export const categories = pgTable(
     index("categories_parent_idx").on(t.parentId),
   ],
 );
+
+export const categoriesInsertSchema = createInsertSchema(categories);
+export const categoriesUpdateSchema = createUpdateSchema(categories);
+export const categoriesSelectSchema = createSelectSchema(categories);
 
 export const products = pgTable(
   "products",

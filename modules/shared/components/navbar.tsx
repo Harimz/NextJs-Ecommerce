@@ -21,7 +21,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className="p-6">
+    <nav className="p-6 border-b-2">
       <div className="flex justify-between mx-auto w-640">
         <div className="flex items-center gap-20">
           <h1 className="font-bold text-xl">Sterling</h1>

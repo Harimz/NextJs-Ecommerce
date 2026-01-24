@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/modules/admin/ui/components/admin-sidebar";
+import { AdminSidebar } from "@/modules/admin/ui/components/sidebar/admin-sidebar";
 import React from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
@@ -6,7 +6,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     <main className="flex">
       <AdminSidebar />
 
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 bg-muted/50">{children}</div>
     </main>
   );
 };
