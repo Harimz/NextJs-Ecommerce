@@ -1,7 +1,10 @@
+import { requireAdmin } from "@/lib/guards";
 import { AdminSidebar } from "@/modules/admin/ui/components/sidebar/admin-sidebar";
 import React from "react";
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
+  await requireAdmin();
+
   return (
     <main className="flex">
       <AdminSidebar />

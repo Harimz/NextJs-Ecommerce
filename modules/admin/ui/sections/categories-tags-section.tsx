@@ -7,6 +7,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { GeneralDisplayError } from "@/modules/shared/components/GeneralDisplayError";
 
+const ADMIN_REF_STALE = 5 * 60 * 1000; // 5 minutes
+
 export const CategoriesTagsSection = () => {
   return (
     <Suspense fallback="loading...">
@@ -29,10 +31,16 @@ const CategoriesTagsSectionSuspense = () => {
 
   const { data: categories } = useSuspenseQuery({
     ...trpc.admin.categories.list.queryOptions({}),
+    staleTime: ADMIN_REF_STALE,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const { data: tags } = useSuspenseQuery({
     ...trpc.admin.tags.list.queryOptions(),
+    staleTime: ADMIN_REF_STALE,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   return (

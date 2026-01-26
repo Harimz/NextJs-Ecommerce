@@ -51,6 +51,8 @@ const defaultValues: CreateProductFormValues = {
   ],
 };
 
+const ADMIN_REF_STALE = 5 * 60 * 1000; // 5 minutes
+
 export const CreateProductSection = () => {
   return (
     <Suspense fallback={"loading..."}>
