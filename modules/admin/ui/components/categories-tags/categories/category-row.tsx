@@ -10,7 +10,6 @@ import { CategoryNode } from "@/modules/admin/domains/categories-schemas";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Badge,
   ChevronRight,
   FolderTree,
   MoreVertical,

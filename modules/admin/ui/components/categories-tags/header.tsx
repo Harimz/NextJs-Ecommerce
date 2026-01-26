@@ -7,8 +7,14 @@ import {
   Category,
   CategoryNode,
 } from "@/modules/admin/domains/categories-schemas";
+import { Tag } from "@/modules/admin/domains/tags-schema";
 
-export const Header = ({ categories }: { categories: CategoryNode[] }) => {
+interface Props {
+  categories: CategoryNode[];
+  tags: Tag[];
+}
+
+export const Header = ({ categories, tags }: Props) => {
   return (
     <div>
       <Tabs defaultValue="categories" className="space-y-6">
@@ -33,7 +39,7 @@ export const Header = ({ categories }: { categories: CategoryNode[] }) => {
         </TabsContent>
 
         <TabsContent value="tags" className="animate-fade-in">
-          <TagsTab />
+          <TagsTab tags={tags} />
         </TabsContent>
       </Tabs>
     </div>

@@ -7,11 +7,7 @@ import {
 } from "../../domains/categories-schemas";
 import { db } from "@/db";
 import { eq, ilike, or, sql } from "drizzle-orm";
-import {
-  categories,
-  categoriesInsertSchema,
-  productCategories,
-} from "@/db/schema";
+import { categories, productCategories } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
 import { buildCategoryTree, slugify } from "../utils/helpers";
 import z from "zod";

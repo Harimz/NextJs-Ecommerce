@@ -31,9 +31,13 @@ const CategoriesTagsSectionSuspense = () => {
     ...trpc.admin.categories.list.queryOptions({}),
   });
 
+  const { data: tags } = useSuspenseQuery({
+    ...trpc.admin.tags.list.queryOptions(),
+  });
+
   return (
     <div className="mt-6">
-      <Header categories={categories} />
+      <Header categories={categories} tags={tags} />
     </div>
   );
 };

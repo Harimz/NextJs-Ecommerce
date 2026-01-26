@@ -207,6 +207,10 @@ export const products = pgTable(
   ],
 );
 
+export const productsInsertSchema = createInsertSchema(products);
+export const productsUpdateSchema = createUpdateSchema(products);
+export const productsSelectSchema = createSelectSchema(products);
+
 export const productCategories = pgTable(
   "product_categories",
   {
@@ -225,6 +229,13 @@ export const productCategories = pgTable(
     index("product_categories_category_idx").on(t.categoryId),
   ],
 );
+
+export const productCategoriesInsertSchema =
+  createInsertSchema(productCategories);
+export const productCategoriesUpdateSchema =
+  createUpdateSchema(productCategories);
+export const productCategoriesSelectSchema =
+  createSelectSchema(productCategories);
 
 export const productImages = pgTable(
   "product_images",
@@ -247,6 +258,10 @@ export const productImages = pgTable(
   (t) => [index("product_images_product_idx").on(t.productId)],
 );
 
+export const productImagesInsertSchema = createInsertSchema(productImages);
+export const productImagesUpdateSchema = createUpdateSchema(productImages);
+export const productImagesSelectSchema = createSelectSchema(productImages);
+
 export const sizes = pgTable(
   "sizes",
   {
@@ -266,6 +281,10 @@ export const sizes = pgTable(
   ],
 );
 
+export const sizesInsertSchema = createInsertSchema(sizes);
+export const sizesUpdateSchema = createUpdateSchema(sizes);
+export const sizesSelectSchema = createSelectSchema(sizes);
+
 export const colors = pgTable(
   "colors",
   {
@@ -276,6 +295,10 @@ export const colors = pgTable(
   },
   (t) => [uniqueIndex("colors_slug_uq").on(t.slug)],
 );
+
+export const colorsInsertSchema = createInsertSchema(colors);
+export const colorsUpdateSchema = createUpdateSchema(colors);
+export const colorsSelectSchema = createSelectSchema(colors);
 
 export const productVariants = pgTable(
   "product_variants",
@@ -313,6 +336,10 @@ export const productVariants = pgTable(
   ],
 );
 
+export const productVariantsInsertSchema = createInsertSchema(productVariants);
+export const productVariantsUpdateSchema = createUpdateSchema(productVariants);
+export const productVariantsSelectSchema = createSelectSchema(productVariants);
+
 export const tags = pgTable(
   "tags",
   {
@@ -322,6 +349,10 @@ export const tags = pgTable(
   },
   (t) => [uniqueIndex("tags_slug_uq").on(t.slug)],
 );
+
+export const tagsInsertSchema = createInsertSchema(tags);
+export const tagsUpdateSchema = createUpdateSchema(tags);
+export const tagsSelectSchema = createSelectSchema(tags);
 
 export const productTags = pgTable(
   "product_tags",
@@ -339,6 +370,10 @@ export const productTags = pgTable(
   ],
 );
 
+export const productTagsInsertSchema = createInsertSchema(productTags);
+export const productTagsUpdateSchema = createUpdateSchema(productTags);
+export const productTagsSelectSchema = createSelectSchema(productTags);
+
 export const productFlags = pgTable(
   "product_flags",
   {
@@ -352,6 +387,10 @@ export const productFlags = pgTable(
     index("product_flags_flag_idx").on(t.flag),
   ],
 );
+
+export const productFlagsInsertSchema = createInsertSchema(productFlags);
+export const productFlagsUpdateSchema = createUpdateSchema(productFlags);
+export const productFlagsSelectSchema = createSelectSchema(productFlags);
 
 export const discounts = pgTable(
   "discounts",
@@ -371,6 +410,10 @@ export const discounts = pgTable(
   ],
 );
 
+export const discountsInsertSchema = createInsertSchema(discounts);
+export const discountsUpdateSchema = createUpdateSchema(discounts);
+export const discountsSelectSchema = createSelectSchema(discounts);
+
 export const productDiscounts = pgTable(
   "product_discounts",
   {
@@ -389,6 +432,13 @@ export const productDiscounts = pgTable(
     index("product_discounts_discount_idx").on(t.discountId),
   ],
 );
+
+export const productDiscountsInsertSchema =
+  createInsertSchema(productDiscounts);
+export const productDiscountsUpdateSchema =
+  createUpdateSchema(productDiscounts);
+export const productDiscountsSelectSchema =
+  createSelectSchema(productDiscounts);
 
 export const productReviews = pgTable(
   "product_reviews",
@@ -415,3 +465,7 @@ export const productReviews = pgTable(
     index("product_reviews_product_idx").on(t.productId),
   ],
 );
+
+export const productReviewsInsertSchema = createInsertSchema(productReviews);
+export const productReviewsUpdateSchema = createUpdateSchema(productReviews);
+export const productReviewsSelectSchema = createSelectSchema(productReviews);
