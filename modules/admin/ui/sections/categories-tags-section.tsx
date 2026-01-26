@@ -6,7 +6,7 @@ import { Header } from "../components/categories-tags/header";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { GeneralDisplayError } from "@/modules/shared/components/GeneralDisplayError";
-import { TRPCError } from "@trpc/server";
+
 export const CategoriesTagsSection = () => {
   return (
     <Suspense fallback="loading...">

@@ -4,6 +4,9 @@ import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const AdminCategoriesTags = async () => {
   // await requireAdmin();
 
