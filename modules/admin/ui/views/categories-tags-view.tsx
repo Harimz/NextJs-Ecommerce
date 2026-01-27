@@ -1,4 +1,3 @@
-import React from "react";
 import { CategoriesTagsSection } from "../sections/categories-tags-section";
 
 export const CategoriesTagsView = () => {

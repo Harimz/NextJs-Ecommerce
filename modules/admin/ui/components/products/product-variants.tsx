@@ -10,18 +10,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DollarSign, Layers, Palette, Plus, Ruler, X } from "lucide-react";
-
-const mockColors = [
-  { name: "Black", hex: "#000000" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Navy", hex: "#1e3a5f" },
-  { name: "Red", hex: "#dc2626" },
-  { name: "Green", hex: "#16a34a" },
-];
+import { Color } from "@/modules/admin/domains/colors-schema";
+import { Size } from "@/modules/admin/domains/sizes-schema";
 
 const mockSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductVariants = () => {
+interface Props {
+  colors: Color[];
+  sizes: Size[];
+}
+
+export const ProductVariants = ({ colors, sizes }: Props) => {
   const [variants, setVariants] = useState([
     {
       id: 1,
@@ -56,7 +55,7 @@ export const ProductVariants = () => {
       variants.map((v) => {
         if (v.id === id) {
           if (field === "color") {
-            const colorData = mockColors.find(
+            const colorData = colors.find(
               (c) => c.name.toLowerCase() === value,
             );
             return {
@@ -141,7 +140,7 @@ export const ProductVariants = () => {
                     <SelectValue placeholder="Color" />
                   </SelectTrigger>
                   <SelectContent>
-                    {mockColors.map((color) => (
+                    {colors.map((color) => (
                       <SelectItem
                         key={color.name}
                         value={color.name.toLowerCase()}
@@ -149,7 +148,7 @@ export const ProductVariants = () => {
                         <div className="flex items-center gap-2">
                           <div
                             className="w-3 h-3 rounded-full border border-border"
-                            style={{ backgroundColor: color.hex }}
+                            style={{ backgroundColor: `${color.hex}` }}
                           />
                           {color.name}
                         </div>

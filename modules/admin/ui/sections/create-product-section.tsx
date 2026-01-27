@@ -21,6 +21,7 @@ import { ProductCategories } from "../components/products/product-categories";
 import { ProductTags } from "../components/products/product-tags";
 import { Button } from "@/components/ui/button";
 import { Eye, Save } from "lucide-react";
+import { ProductPreviewDialog } from "../components/products/product-preview-dialog";
 
 const defaultValues: CreateProductFormValues = {
   name: "",
@@ -51,8 +52,6 @@ const defaultValues: CreateProductFormValues = {
   ],
 };
 
-const ADMIN_REF_STALE = 5 * 60 * 1000; // 5 minutes
-
 export const CreateProductSection = () => {
   return (
     <Suspense fallback={"loading..."}>
@@ -80,6 +79,14 @@ const CreateProductSectionSuspense = () => {
 
   const { data: tags } = useSuspenseQuery({
     ...trpc.admin.tags.list.queryOptions(),
+  });
+
+  const { data: colors } = useSuspenseQuery({
+    ...trpc.admin.colors.list.queryOptions(),
+  });
+
+  const { data: sizes } = useSuspenseQuery({
+    ...trpc.admin.sizes.list.queryOptions(),
   });
 
   const form = useForm<CreateProductFormValues>({
@@ -119,7 +126,7 @@ const CreateProductSectionSuspense = () => {
 
           <ProductImages />
 
-          <ProductVariants />
+          <ProductVariants colors={colors} sizes={sizes} />
         </div>
 
         <div className="w-[30%] flex flex-col gap-6">
@@ -134,9 +141,7 @@ const CreateProductSectionSuspense = () => {
               <Save className="size-4" /> Save Product
             </Button>
 
-            <Button variant="outline" className="w-full">
-              <Eye /> Preview
-            </Button>
+            <ProductPreviewDialog colors={colors} sizes={sizes} />
           </div>
         </div>
       </form>

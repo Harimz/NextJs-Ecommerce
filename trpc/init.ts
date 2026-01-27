@@ -2,11 +2,15 @@ import { auth } from "@/lib/auth";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { headers } from "next/headers";
 import { cache } from "react";
-import { SuperJSON } from "superjson";
+import superJson from "superjson";
 
 export const createTRPCContext = cache(async () => {
-  const session = await auth.api.getSession({ headers: await headers() });
-  return { session };
+  const headersList = await headers();
+  const session = await auth.api.getSession({ headers: headersList });
+
+  return {
+    session,
+  };
 });
 
 export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
@@ -16,7 +20,7 @@ export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
 // For instance, the use of a t variable
 // is common in i18n libraries.
 const t = initTRPC.context<TRPCContext>().create({
-  transformer: SuperJSON,
+  transformer: superJson,
 });
 
 // Base router and procedure helpers

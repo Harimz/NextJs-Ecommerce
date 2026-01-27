@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@/modules/shared/hooks/use-user";
 import Link from "next/link";
-import React from "react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export const UserButton = () => {
   const { user } = useUser();
+  const router = useRouter();
 
   console.log(user);
 
@@ -35,8 +37,15 @@ export const UserButton = () => {
         </DropdownMenuGroup>
         <DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={async () => {
+              await authClient.signOut();
+
+              router.push("/login");
+            }}
+          >
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

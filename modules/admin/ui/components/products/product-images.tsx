@@ -1,13 +1,16 @@
 import { cn } from "@/lib/utils";
 import { CreateProductFormValues } from "@/modules/admin/domains/products-schemas";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
 import { ImageIcon, Upload, X } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export const ProductImages = () => {
   const { control } = useFormContext<CreateProductFormValues>();
-
+  const trpc = useTRPC();
   const {
     fields: images,
     append,
@@ -19,19 +22,67 @@ export const ProductImages = () => {
     keyName: "key",
   });
 
+  const getUploadUrls = useMutation(
+    trpc.admin.productImages.getUploadUrls.mutationOptions(),
+  );
+
+  const deleteImage = useMutation(
+    trpc.admin.productImages.delete.mutationOptions(),
+  );
+
+  const onRemove = async (index: number) => {
+    const toastId = toast.loading("Removing image");
+    const img = images[index];
+
+    remove(index);
+
+    try {
+      await deleteImage.mutateAsync({ key: img.r2Key });
+    } catch (e) {
+      append({ ...img, sortOrder: images.length });
+      toast.error("Could not remove image");
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+
   const onFilesSelected = async (files: FileList | null) => {
     if (!files) return;
 
-    Array.from(files).forEach((file, index) => {
-      const url = URL.createObjectURL(file);
+    const toastId = toast.loading("Uploading Images");
 
-      append({
-        r2Key: `/temp/${file.name}`,
-        url,
-        alt: null,
-        sortOrder: images.length + index,
-      });
+    const fileArr = Array.from(files);
+
+    const res = await getUploadUrls.mutateAsync({
+      files: fileArr.map((f) => ({ name: f.name, type: f.type, size: f.size })),
     });
+
+    await Promise.all(
+      res.uploads.map(async (u, idx) => {
+        const file = fileArr[idx];
+
+        const putRes = await fetch(u.uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: file,
+        });
+
+        if (!putRes.ok) {
+          throw new Error(`Upload failed for ${file.name}`);
+        }
+
+        append({
+          r2Key: u.key,
+          url: u.publicUrl,
+          alt: null,
+          sortOrder: images.length + idx,
+        });
+      }),
+    );
+
+    toast.dismiss(toastId);
   };
 
   return (
@@ -75,13 +126,14 @@ export const ProductImages = () => {
                 alt={img.alt ?? ""}
                 fill
                 className="h-full w-full object-cover"
+                unoptimized
               />
 
               <button
                 type="button"
-                onClick={() => remove(index)}
+                onClick={() => onRemove(index)}
                 className={cn(
-                  "absolute top-1 right-1 rounded-full bg-background/80 p-1",
+                  "absolute top-1 right-1 rounded-full bg-background/80 p- cursor-pointer",
                   "opacity-0 group-hover:opacity-100 transition",
                 )}
               >
