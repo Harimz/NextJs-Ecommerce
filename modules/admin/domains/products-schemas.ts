@@ -138,3 +138,37 @@ export const updateProductInput = productsInsertSchema
   });
 
 export type UpdateProductInput = z.infer<typeof updateProductInput>;
+
+export const adminProductListImageSchema = z.object({
+  id: z.string().uuid(),
+  url: z.string().url(),
+  alt: z.string().nullable(),
+  sortOrder: z.number().int(),
+  r2Key: z.string(),
+});
+
+export const adminProductListVariantSchema = z.object({
+  id: z.string().uuid(),
+  sku: z.string().nullable(),
+  priceCents: z.number().int(),
+  inventory: z.number().int(),
+  sizeCode: z.string().nullable(),
+  colorName: z.string().nullable(),
+});
+
+export const adminProductListItemSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  slug: z.string(),
+  active: z.boolean(),
+  minPriceCents: z.number().int().nullable(),
+  maxPriceCents: z.number().int().nullable(),
+
+  images: z.array(adminProductListImageSchema),
+  variants: z.array(adminProductListVariantSchema),
+});
+
+export const adminProductListOutput = z.array(adminProductListItemSchema);
+
+export type AdminProductOutput = z.output<typeof adminProductListItemSchema>;
+export type AdminProductListOutput = z.output<typeof adminProductListOutput>;

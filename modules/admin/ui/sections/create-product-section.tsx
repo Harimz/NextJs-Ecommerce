@@ -20,8 +20,9 @@ import { ProductStatus } from "../components/products/product-status";
 import { ProductCategories } from "../components/products/product-categories";
 import { ProductTags } from "../components/products/product-tags";
 import { Button } from "@/components/ui/button";
-import { Eye, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import { ProductPreviewDialog } from "../components/products/product-preview-dialog";
+import toast from "react-hot-toast";
 
 const defaultValues: CreateProductFormValues = {
   name: "",
@@ -107,12 +108,19 @@ const CreateProductSectionSuspense = () => {
     keyName: "key",
   });
 
-  const createProduct = useMutation(
-    trpc.admin.products.create.mutationOptions({}),
+  const { mutate: createProduct, isPending } = useMutation(
+    trpc.admin.products.create.mutationOptions({
+      onSuccess: () => {
+        toast.success("Successfully created product!");
+      },
+      onError: (err) => {
+        toast.error(err.message || "Something went wrong");
+      },
+    }),
   );
 
   const onSubmit = (values: CreateProductFormValues) => {
-    console.log(values);
+    createProduct(values);
   };
 
   return (
@@ -137,7 +145,12 @@ const CreateProductSectionSuspense = () => {
           <ProductTags tags={tags} />
 
           <div className="p-6 bg-muted border rounded-md flex flex-col gap-4">
-            <Button variant="primary" type="submit" className="w-full">
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-full"
+              disabled={isPending}
+            >
               <Save className="size-4" /> Save Product
             </Button>
 
