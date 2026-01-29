@@ -15,6 +15,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { InventoryRow } from "../components/inventory/inventory-row";
+import { useQueryState } from "nuqs";
+import { parseAsString, parseAsInteger } from "nuqs";
+import { useDebouncedValue } from "@/modules/shared/hooks/use-debounced-value";
 
 export const InventorySection = () => {
   return (
@@ -35,9 +38,34 @@ export const InventorySection = () => {
 
 const InventorySectionSuspense = () => {
   const trpc = useTRPC();
-  const { data: products } = useSuspenseQuery({
-    ...trpc.admin.products.list.queryOptions(),
+
+  const [q, setQ] = useQueryState("q", parseAsString.withDefault(""));
+  const [status, setStatus] = useQueryState(
+    "status",
+    parseAsString.withDefault("all"),
+  );
+  const [department, setDepartment] = useQueryState("dept", parseAsString);
+  const [limit, setLimit] = useQueryState(
+    "limit",
+    parseAsInteger.withDefault(20),
+  );
+  const [cursor, setCursor] = useQueryState("cursor", parseAsString);
+
+  const debouncedQ = useDebouncedValue(q, 300);
+
+  const { data } = useSuspenseQuery({
+    ...trpc.admin.products.list.queryOptions({
+      q: debouncedQ || undefined,
+      status: status as "all" | "active" | "draft",
+      department:
+        (department as "MEN" | "WOMEN" | "KIDS" | "UNISEX" | undefined) ||
+        undefined,
+      limit,
+      cursor: cursor ?? undefined,
+    }),
   });
+
+  const products = data.items;
 
   const totalProducts = products.length;
   const activeProducts = products.filter((p) => p.active === true).length;
@@ -50,7 +78,7 @@ const InventorySectionSuspense = () => {
     return productInventory + productAcc;
   }, 0);
 
-  console.log(totalInventory);
+  console.log(data);
 
   return (
     <div className="mt-6">
@@ -61,7 +89,23 @@ const InventorySectionSuspense = () => {
         <InventoryCard title="Total Products" value={totalProducts} />
       </div>
 
-      <InventoryFilter />
+      <InventoryFilter
+        q={q}
+        onQChange={(v) => {
+          setCursor(null);
+          setQ(v);
+        }}
+        status={status as "all" | "active" | "draft"}
+        onStatusChange={(v) => {
+          setCursor(null);
+          setStatus(v);
+        }}
+        department={department ?? ""}
+        onDepartmentChange={(v) => {
+          setCursor(null);
+          setDepartment(v || null);
+        }}
+      />
 
       <Table className="mt-6">
         <TableHeader>

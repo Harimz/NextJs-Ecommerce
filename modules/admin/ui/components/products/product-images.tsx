@@ -73,6 +73,8 @@ export const ProductImages = () => {
           throw new Error(`Upload failed for ${file.name}`);
         }
 
+        console.log(u.publicUrl, u.key);
+
         append({
           r2Key: u.key,
           url: u.publicUrl,

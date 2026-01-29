@@ -55,3 +55,32 @@ export const slugify = (s: string) => {
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
 };
+
+export const skuTokenize = (input: string) => {
+  return input
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 24);
+};
+
+export const makeSkuBaseFromSlug = (slug: string) => {
+  return skuTokenize(slug);
+};
+
+export const makeVariantSku = (params: {
+  base: string;
+  sizeCode?: string | null;
+  colorName?: string | null;
+  index: number;
+}) => {
+  const sizePart = params.sizeCode ? skuTokenize(params.sizeCode) : "NOSIZE";
+  const colorPart = params.colorName
+    ? skuTokenize(params.colorName)
+    : "NOCOLOR";
+
+  const idx = String(params.index + 1).padStart(2, "0");
+
+  return `${params.base}-${sizePart}-${colorPart}-${idx}`;
+};

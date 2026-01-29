@@ -159,6 +159,7 @@ export const adminProductListVariantSchema = z.object({
 export const adminProductListItemSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  department: departmentSchema,
   slug: z.string(),
   active: z.boolean(),
   minPriceCents: z.number().int().nullable(),
@@ -172,3 +173,23 @@ export const adminProductListOutput = z.array(adminProductListItemSchema);
 
 export type AdminProductOutput = z.output<typeof adminProductListItemSchema>;
 export type AdminProductListOutput = z.output<typeof adminProductListOutput>;
+
+export const adminProductListInput = z.object({
+  q: z.string().trim().optional(),
+  status: z.enum(["all", "active", "draft"]).default("all"),
+  department: departmentSchema.optional(),
+  limit: z.number().int().min(1).max(50).default(20),
+  cursor: z.string().optional(),
+});
+
+export type AdminProductListInput = z.input<typeof adminProductListInput>;
+
+export const adminProductListPagedOutput = z.object({
+  items: adminProductListOutput,
+  nextCursor: z.string().nullable(),
+  total: z.number().int(),
+});
+
+export type AdminProductListPagedOutput = z.output<
+  typeof adminProductListPagedOutput
+>;

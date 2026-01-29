@@ -3,7 +3,6 @@
 import { GeneralDisplayError } from "@/modules/shared/components/GeneralDisplayError";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -72,7 +71,6 @@ export const CreateProductSection = () => {
 
 const CreateProductSectionSuspense = () => {
   const trpc = useTRPC();
-  const router = useRouter();
 
   const { data: categories } = useSuspenseQuery({
     ...trpc.admin.categories.list.queryOptions({}),

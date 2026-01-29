@@ -9,7 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DollarSign, Layers, Palette, Plus, Ruler, X } from "lucide-react";
+import {
+  Copy,
+  DollarSign,
+  Layers,
+  Palette,
+  Plus,
+  Ruler,
+  X,
+} from "lucide-react";
 import { Color } from "@/modules/admin/domains/colors-schema";
 import { Size } from "@/modules/admin/domains/sizes-schema";
 import { CreateProductFormValues } from "@/modules/admin/domains/products-schemas";
@@ -31,7 +39,7 @@ interface Props {
 }
 
 export const ProductVariants = ({ colors, sizes }: Props) => {
-  const { control } = useFormContext<CreateProductFormValues>();
+  const { control, getValues } = useFormContext<CreateProductFormValues>();
 
   const productType = useWatch({ control, name: "productType" });
   const sizeCategory = getSizeCategory(productType);
@@ -58,6 +66,20 @@ export const ProductVariants = ({ colors, sizes }: Props) => {
     });
   };
 
+  const duplicateVariant = (index: number) => {
+    const v = getValues(`variants.${index}`);
+
+    append({
+      sku: null,
+      active: v.active ?? true,
+      sizeId: null,
+      colorId: v.colorId,
+      priceCents: v.priceCents ?? 0,
+      compareAtPriceCents: v.compareAtPriceCents ?? null,
+      inventory: v.inventory ?? 0,
+    });
+  };
+
   return (
     <div className="p-6 border bg-muted rounded-md">
       <div className="flex items-center gap-2 mb-4">
@@ -79,15 +101,27 @@ export const ProductVariants = ({ colors, sizes }: Props) => {
                   Variant {index + 1}
                 </span>
 
-                {fields.length > 1 && (
-                  <button
+                <div className="flex gap-6">
+                  <Button
+                    size="icon"
+                    className="cursor-pointer"
+                    variant="ghost"
                     type="button"
-                    onClick={() => remove(index)}
-                    className="p-1 hover:bg-destructive/20 rounded transition-colors"
+                    onClick={() => duplicateVariant(index)}
                   >
-                    <X className="w-4 h-4 text-destructive" />
-                  </button>
-                )}
+                    <Copy className="size-4 " />
+                  </Button>
+
+                  {fields.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className="p-1 hover:bg-destructive/20 rounded transition-colors"
+                    >
+                      <X className="w-4 h-4 text-destructive" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

@@ -8,7 +8,7 @@ import { Toaster as HotToaster } from "react-hot-toast";
 import { MdErrorOutline } from "react-icons/md";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ThemeProvider } from "@/modules/shared/providers/theme-provider";
-
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 const overpass = Overpass({ subsets: ["latin"], display: "swap" });
 
 const geistSans = Geist({
@@ -43,33 +43,35 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TRPCReactProvider>
-            <HotToaster
-              position="top-center"
-              toastOptions={{
-                error: {
-                  style: {
-                    background: "rgba(165, 0, 0, 0.65)",
-                    color: "white",
+            <NuqsAdapter>
+              <HotToaster
+                position="top-center"
+                toastOptions={{
+                  error: {
+                    style: {
+                      background: "rgba(165, 0, 0, 0.65)",
+                      color: "white",
+                    },
+                    icon: <MdErrorOutline className="size-6 text-white" />,
                   },
-                  icon: <MdErrorOutline className="size-6 text-white" />,
-                },
-                success: {
-                  style: {
-                    background: "rgba(32, 232, 0, 0.56)",
-                    color: "white",
+                  success: {
+                    style: {
+                      background: "rgba(32, 232, 0, 0.56)",
+                      color: "white",
+                    },
                   },
-                },
-                loading: {
-                  icon: (
-                    <AiOutlineLoading3Quarters className="size-4 animate-spin" />
-                  ),
-                },
-              }}
-            />
+                  loading: {
+                    icon: (
+                      <AiOutlineLoading3Quarters className="size-4 animate-spin" />
+                    ),
+                  },
+                }}
+              />
 
-            <Navbar />
+              <Navbar />
 
-            {children}
+              {children}
+            </NuqsAdapter>
           </TRPCReactProvider>
         </ThemeProvider>
       </body>

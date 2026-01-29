@@ -160,7 +160,7 @@ export const categories = pgTable(
       .notNull(),
   },
   (t) => [
-    uniqueIndex("categories_slug_uq").on(t.slug),
+    uniqueIndex("categories_parent_slug_uq").on(t.parentId, t.slug),
     index("categories_parent_idx").on(t.parentId),
   ],
 );

@@ -9,7 +9,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { AdminProductOutput } from "@/modules/admin/domains/products-schemas";
+import {
+  AdminProductListPagedOutput,
+  AdminProductOutput,
+} from "@/modules/admin/domains/products-schemas";
+import { useTRPC } from "@/trpc/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Copy,
   Eye,
@@ -18,23 +23,86 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import React from "react";
+import Image from "next/image";
+import toast from "react-hot-toast";
 
 export const InventoryRow = ({ product }: { product: AdminProductOutput }) => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
   const productInventory = product.variants.reduce(
     (acc, v) => acc + v.inventory,
     0,
+  );
+
+  const toggleActive = useMutation(
+    trpc.admin.products.toggleActive.mutationOptions({
+      onMutate: async ({ id, active }) => {
+        await queryClient.cancelQueries({
+          queryKey: trpc.admin.products.list.queryKey(),
+        });
+
+        const snapshots =
+          queryClient.getQueriesData<AdminProductListPagedOutput>({
+            queryKey: trpc.admin.products.list.queryKey(),
+          });
+
+        queryClient.setQueriesData<AdminProductListPagedOutput>(
+          {
+            queryKey: trpc.admin.products.list.queryKey(),
+          },
+          (old) => {
+            if (!old) return old;
+
+            return {
+              ...old,
+              items: old.items.map((p) => (p.id === id ? { ...p, active } : p)),
+            };
+          },
+        );
+
+        return { snapshots };
+      },
+
+      onError: (_err, _vars, ctx) => {
+        ctx?.snapshots?.forEach(([key, data]) => {
+          queryClient.setQueryData(key, data);
+        });
+      },
+
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.admin.products.list.queryKey(),
+        });
+      },
+    }),
+  );
+
+  const { mutate: deleteProduct } = useMutation(
+    trpc.admin.products.delete.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.admin.products.list.queryKey(),
+        });
+
+        toast.success("Deleted product");
+      },
+      onError: (err) => {
+        toast.error(err.message || "Something went wrong");
+      },
+    }),
   );
 
   return (
     <TableRow key={product.id} className="table-row-hover animate-fade-in">
       <TableCell>
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden flex-shrink-0">
+          <div className="relative w-12 h-12 rounded-lg bg-muted overflow-hidden shrink-0">
             {product.images.length > 0 ? (
-              <img
+              <Image
                 src={product.images[0].url}
                 alt={product.name}
+                fill
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -52,8 +120,11 @@ export const InventoryRow = ({ product }: { product: AdminProductOutput }) => {
       <TableCell>
         <div className="flex items-center gap-2">
           <Switch
+            className="cursor-pointer"
             checked={product.active}
-            className="data-[state=checked]:bg-success"
+            onCheckedChange={(checked) =>
+              toggleActive.mutate({ id: product.id, active: checked })
+            }
           />
           <Badge
             variant={product.active ? "default" : "secondary"}
@@ -64,12 +135,14 @@ export const InventoryRow = ({ product }: { product: AdminProductOutput }) => {
         </div>
       </TableCell>
       <TableCell>
-        <span className="text-sm text-muted-foreground">{product.id}</span>
+        <span className="text-sm text-muted-foreground">
+          {product.department}
+        </span>
       </TableCell>
       <TableCell>
         <div className="text-sm">
           <span className="font-medium text-foreground">
-            ${product.minPriceCents?.toFixed(2)}
+            ${((product.minPriceCents ?? 0) / 100).toFixed(2)}
           </span>
         </div>
       </TableCell>
@@ -106,7 +179,10 @@ export const InventoryRow = ({ product }: { product: AdminProductOutput }) => {
               Duplicate
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={() => deleteProduct({ id: product.id })}
+            >
               <Trash2 className="w-4 h-4 mr-2" />
               Delete
             </DropdownMenuItem>
