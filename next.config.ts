@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: "cdn.htailors.shop",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
   },
 };

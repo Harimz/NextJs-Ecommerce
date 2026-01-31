@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
-import { Navbar } from "@/modules/shared/components/navbar";
-import { Overpass } from "next/font/google";
 import { Toaster as HotToaster } from "react-hot-toast";
 import { MdErrorOutline } from "react-icons/md";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ThemeProvider } from "@/modules/shared/providers/theme-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-const overpass = Overpass({ subsets: ["latin"], display: "swap" });
+import { Navbar } from "@/modules/shared/components/navbar";
+import { Playfair } from "next/font/google";
+
+const playfair = Playfair({ subsets: ["latin"], display: "swap" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={overpass.className} suppressHydrationWarning>
+    <html lang="en" className={playfair.className} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
