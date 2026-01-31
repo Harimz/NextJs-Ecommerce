@@ -78,8 +78,6 @@ const InventorySectionSuspense = () => {
     return productInventory + productAcc;
   }, 0);
 
-  console.log(data);
-
   return (
     <div className="mt-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
