@@ -5,11 +5,11 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { ProductCard } from "../components/product-card";
 import { motion } from "motion/react";
+import { ProductCard } from "../components/product-card";
 import { DisplayProductsSkeleton } from "../skeletons/display-products-skeleton";
 
-export const FeaturedSection = () => {
+export const NewArrivalsSection = () => {
   return (
     <Suspense fallback={<DisplayProductsSkeleton />}>
       <ErrorBoundary
@@ -20,17 +20,20 @@ export const FeaturedSection = () => {
           />
         )}
       >
-        <FeaturedSectionSuspense />
+        <NewArrivalsSectionSuspense />
       </ErrorBoundary>
     </Suspense>
   );
 };
 
-export const FeaturedSectionSuspense = () => {
+const NewArrivalsSectionSuspense = () => {
   const trpc = useTRPC();
+
   const { data: products } = useSuspenseQuery(
-    trpc.home.products.featured.queryOptions(),
+    trpc.home.products.newArrivals.queryOptions(),
   );
+
+  const items = products.splice(0, 4);
 
   return (
     <motion.div
@@ -39,7 +42,7 @@ export const FeaturedSectionSuspense = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mt-6"
     >
-      {products.map((product, i) => (
+      {items.splice(0, 4).map((product, i) => (
         <motion.div
           key={product.id}
           initial={{ opacity: 0, y: 8 }}

@@ -33,11 +33,11 @@ const ProductDetailsSectionSuspense = ({ slug }: { slug: string }) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-6 mt-10">
-      <div className="w-full md:w-1/2">
+      <div className="flex-1">
         <ProductDisplayImages images={product.images} />
       </div>
 
-      <div className="w-full md:w-1/2">
+      <div className="flex-1">
         <ProductInfo product={product} />
       </div>
     </div>

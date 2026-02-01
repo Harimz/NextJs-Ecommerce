@@ -7,7 +7,7 @@ export const ProductDisplayImages = ({ images }: { images: ProductImages }) => {
   const [selectedImage, setSelectedImage] = useState(0);
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       <div className="relative aspect-3/4 w-full">
         <Image
           src={images[selectedImage].url}

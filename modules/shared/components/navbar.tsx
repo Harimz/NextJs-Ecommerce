@@ -3,19 +3,23 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "../hooks/use-user";
 import Link from "next/link";
-import { Search, ShoppingCart } from "lucide-react";
+import { Moon, Search, ShoppingCart, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { UserButton } from "@/modules/auth/ui/components/user-button";
 import { UserButtonSkeleton } from "@/modules/auth/ui/skeletons/user-button-skeleton";
+import { useTheme } from "next-themes";
 
 export const Navbar = () => {
   const { user, isLoading } = useUser();
+  const { setTheme, theme } = useTheme();
 
   return (
     <nav className="p-6 border-b-2 hidden md:block">
-      <div className="flex justify-between max-w-680 w-[95%] mx-auto">
+      <div className="flex justify-between max-w-400 w-[95%] mx-auto">
         <div className="flex items-center gap-20">
-          <h1 className="font-bold text-xl">Sterling</h1>
+          <Link href="/" passHref>
+            <h1 className="font-bold text-xl">HTAILORS</h1>
+          </Link>
 
           <div className="relative w-100 max-w-200">
             <Input placeholder="Search..." className="pl-10 w-full" />
@@ -24,6 +28,15 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-10">
+          {/* <Button
+            size="icon"
+            variant="outline"
+            className="rounded-full"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "light" ? <Moon /> : <Sun />}
+          </Button> */}
+
           <Button
             size="icon"
             variant="outline"

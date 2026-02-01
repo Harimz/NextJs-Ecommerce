@@ -20,7 +20,7 @@ export const ProductCardSkeleton = () => {
   );
 };
 
-export const FeaturedProductsSkeleton = ({ count = 8 }: { count?: number }) => {
+export const DisplayProductsSkeleton = ({ count = 8 }: { count?: number }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mt-6">
       {Array.from({ length: count }).map((_, i) => (
