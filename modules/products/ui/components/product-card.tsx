@@ -1,4 +1,4 @@
-import { FeaturedProduct } from "../../domains/product-schema";
+import { FeaturedProduct } from "../../../home/domains/product-schema";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ export const ProductCard = ({ product }: { product: FeaturedProduct }) => {
       className="group"
       onMouseEnter={() => {
         qc.prefetchQuery(
-          trpc.home.products.details.queryOptions({
+          trpc.products.details.queryOptions({
             slug: product.slug.trim(),
           }),
         );

@@ -1,10 +1,12 @@
-import { homeRouter } from "@/modules/home/server";
 import { createTRPCRouter } from "../init";
 import { adminRouter } from "@/modules/admin/server";
+import { productsRouter } from "@/modules/products/server/routers/products-router";
+import { productReviewsRouter } from "@/modules/products/server/routers/product-reviews-router";
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
-  home: homeRouter,
+  products: productsRouter,
+  productReviews: productReviewsRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

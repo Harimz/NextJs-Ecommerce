@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProductImages } from "../../domains/product-schema";
+import { ProductImages } from "../../../home/domains/product-schema";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 

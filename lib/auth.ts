@@ -5,6 +5,12 @@ import * as schema from "@/db/schema";
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
+
+  advanced: {
+    database: {
+      generateId: false,
+    },
+  },
   emailAndPassword: {
     enabled: true,
   },

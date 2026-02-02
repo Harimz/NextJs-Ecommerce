@@ -8,8 +8,8 @@ export const revalidate = 0;
 const Home = async () => {
   const qc = getQueryClient();
 
-  void qc.prefetchQuery(trpc.home.products.featured.queryOptions());
-  void qc.prefetchQuery(trpc.home.products.newArrivals.queryOptions());
+  void qc.prefetchQuery(trpc.products.featured.queryOptions());
+  void qc.prefetchQuery(trpc.products.newArrivals.queryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>

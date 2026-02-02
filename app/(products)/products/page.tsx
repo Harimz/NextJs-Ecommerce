@@ -1,7 +1,8 @@
+import { ProductsView } from "@/modules/products/ui/views/products-view";
 import React from "react";
 
 const ProductsPage = () => {
-  return <div>ProductsPage</div>;
+  return <ProductsView />;
 };
 
 export default ProductsPage;

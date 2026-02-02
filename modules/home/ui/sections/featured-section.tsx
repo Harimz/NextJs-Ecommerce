@@ -5,7 +5,7 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { ProductCard } from "../components/product-card";
+import { ProductCard } from "../../../products/ui/components/product-card";
 import { motion } from "motion/react";
 import { DisplayProductsSkeleton } from "../skeletons/display-products-skeleton";
 
@@ -29,7 +29,7 @@ export const FeaturedSection = () => {
 export const FeaturedSectionSuspense = () => {
   const trpc = useTRPC();
   const { data: products } = useSuspenseQuery(
-    trpc.home.products.featured.queryOptions(),
+    trpc.products.featured.queryOptions(),
   );
 
   return (

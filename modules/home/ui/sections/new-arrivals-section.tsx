@@ -6,7 +6,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { motion } from "motion/react";
-import { ProductCard } from "../components/product-card";
+import { ProductCard } from "../../../products/ui/components/product-card";
 import { DisplayProductsSkeleton } from "../skeletons/display-products-skeleton";
 
 export const NewArrivalsSection = () => {
@@ -30,7 +30,7 @@ const NewArrivalsSectionSuspense = () => {
   const trpc = useTRPC();
 
   const { data: products } = useSuspenseQuery(
-    trpc.home.products.newArrivals.queryOptions(),
+    trpc.products.newArrivals.queryOptions(),
   );
 
   const items = products.splice(0, 4);

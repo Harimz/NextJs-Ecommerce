@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ProductDetails } from "../../domains/product-schema";
+import { ProductDetails } from "../../../home/domains/product-schema";
 import { Heart, Minus, Plus, Star } from "lucide-react";
 import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
 import { Separator } from "@/components/ui/separator";

@@ -23,7 +23,7 @@ export const UserButton = () => {
       <DropdownMenuTrigger asChild>
         <div className="flex gap-4 items-center cursor-pointer">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={user?.image ?? ""} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 

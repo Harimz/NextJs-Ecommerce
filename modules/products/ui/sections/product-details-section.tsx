@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ProductDisplayImages } from "../components/product-display-images";
 import { ProductInfo } from "../components/product-info";
+import { ProductReviews } from "../components/product-reviews";
 
 export const ProductDetailsSection = ({ slug }: { slug: string }) => {
   return (
@@ -28,18 +29,22 @@ export const ProductDetailsSection = ({ slug }: { slug: string }) => {
 const ProductDetailsSectionSuspense = ({ slug }: { slug: string }) => {
   const trpc = useTRPC();
   const { data: product } = useSuspenseQuery(
-    trpc.home.products.details.queryOptions({ slug }),
+    trpc.products.details.queryOptions({ slug }),
   );
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 mt-10">
-      <div className="flex-1">
-        <ProductDisplayImages images={product.images} />
+    <>
+      <div className="flex flex-col md:flex-row gap-6 mt-10">
+        <div className="flex-1">
+          <ProductDisplayImages images={product.images} />
+        </div>
+
+        <div className="flex-1">
+          <ProductInfo product={product} />
+        </div>
       </div>
 
-      <div className="flex-1">
-        <ProductInfo product={product} />
-      </div>
-    </div>
+      <ProductReviews productId={product.id} />
+    </>
   );
 };
