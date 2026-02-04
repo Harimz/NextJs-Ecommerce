@@ -8,10 +8,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import { ProductDisplayImages } from "../components/product-display-images";
 import { ProductInfo } from "../components/product-info";
 import { ProductReviews } from "../components/product-reviews";
+import { ProductDetailsSkeleton } from "../skeletons/product-details-skeleton";
 
 export const ProductDetailsSection = ({ slug }: { slug: string }) => {
   return (
-    <Suspense fallback={"loading..."}>
+    <Suspense fallback={<ProductDetailsSkeleton />}>
       <ErrorBoundary
         FallbackComponent={({ error, resetErrorBoundary }) => (
           <GeneralDisplayError

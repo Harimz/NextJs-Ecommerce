@@ -3,24 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
-import { useQueryClient } from "@tanstack/react-query";
-import { useTRPC } from "@/trpc/client";
+import { FilteredProduct } from "../../domains/product-reviews-schema";
 
-export const ProductCard = ({ product }: { product: FeaturedProduct }) => {
-  const qc = useQueryClient();
-  const trpc = useTRPC();
-
+export const ProductCard = ({
+  product,
+}: {
+  product: FeaturedProduct | FilteredProduct;
+}) => {
   return (
-    <div
-      className="group"
-      onMouseEnter={() => {
-        qc.prefetchQuery(
-          trpc.products.details.queryOptions({
-            slug: product.slug.trim(),
-          }),
-        );
-      }}
-    >
+    <div className="group">
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative aspect-3/4 overflow-hidden rounded-lg bg-muted w-full">
           <Image

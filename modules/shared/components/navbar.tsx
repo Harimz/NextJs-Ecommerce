@@ -3,15 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "../hooks/use-user";
 import Link from "next/link";
-import { Moon, Search, ShoppingCart, Sun } from "lucide-react";
+import { Search, ShoppingCart, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { UserButton } from "@/modules/auth/ui/components/user-button";
 import { UserButtonSkeleton } from "@/modules/auth/ui/skeletons/user-button-skeleton";
 import { useTheme } from "next-themes";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const { user, isLoading } = useUser();
   const { setTheme, theme } = useTheme();
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+
+  const submit = () => {
+    const q = query.trim();
+    if (!q) router.push(`/products`);
+
+    router.push(`/products?q=${encodeURIComponent(q)}`);
+  };
 
   return (
     <nav className="p-6 border-b-2 hidden md:block">
@@ -22,7 +33,14 @@ export const Navbar = () => {
           </Link>
 
           <div className="relative w-100 max-w-200">
-            <Input placeholder="Search..." className="pl-10 w-full" />
+            <Input
+              placeholder="Search..."
+              className="pl-10 w-full"
+              onChange={({ target }) => setQuery(target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") submit();
+              }}
+            />
             <Search className="text-muted-foreground absolute left-2.5 top-2.5 size-4" />
           </div>
         </div>

@@ -3,15 +3,16 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "@/trpc/init";
-import {
-  deleteReviewInput,
-  listReviewsInput,
-  upsertReviewInput,
-} from "../../domains/product-schema";
+
 import { db } from "@/db";
 import { productReviews, products, user } from "@/db/schema";
 import { and, desc, eq, lt, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import {
+  deleteReviewInput,
+  listReviewsInput,
+  upsertReviewInput,
+} from "../../domains/product-reviews-schema";
 
 export const productReviewsRouter = createTRPCRouter({
   list: baseProcedure.input(listReviewsInput).query(async ({ input }) => {

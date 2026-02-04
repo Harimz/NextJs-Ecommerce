@@ -12,10 +12,10 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 
   const qc = getQueryClient();
 
-  await qc.prefetchQuery(trpc.admin.categories.list.queryOptions({}));
-  await qc.prefetchQuery(trpc.admin.tags.list.queryOptions());
-  await qc.prefetchQuery(trpc.admin.colors.list.queryOptions());
-  await qc.prefetchQuery(trpc.admin.sizes.list.queryOptions());
+  void qc.prefetchQuery(trpc.admin.categories.list.queryOptions({}));
+  void qc.prefetchQuery(trpc.admin.tags.list.queryOptions());
+  void qc.prefetchQuery(trpc.admin.colors.list.queryOptions());
+  void qc.prefetchQuery(trpc.admin.sizes.list.queryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
