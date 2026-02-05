@@ -41,7 +41,7 @@ export const ProductCard = ({
       </Link>
 
       <div className="mt-4 space-y-1">
-        <Link passHref href={`/product/${product.slug}`}>
+        <Link passHref href={`/products/${product.slug}`}>
           <h3 className="font-medium text-sm leading-tight hover:text-custom-primary transition-colors">
             {product.name}
           </h3>
