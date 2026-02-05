@@ -10,7 +10,6 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Navbar } from "@/modules/shared/components/navbar";
 import { Playfair } from "next/font/google";
 import { Footer } from "@/modules/shared/components/footer";
-import { CartSheet } from "@/modules/cart/ui/components/cart-sheet";
 
 const playfair = Playfair({ subsets: ["latin"], display: "swap" });
 
@@ -72,8 +71,6 @@ export default function RootLayout({
               />
 
               <Navbar />
-
-              <CartSheet />
 
               {children}
 

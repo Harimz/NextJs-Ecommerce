@@ -1,5 +1,3 @@
-"use server";
-
 import { cookies } from "next/headers";
 
 const CART_COOKIE = "cart_id";
