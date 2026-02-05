@@ -5,6 +5,7 @@ import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useAddToCart } from "@/modules/cart/api/cart-mutations";
 
 export const ProductInfo = ({ product }: { product: ProductDetails }) => {
   const colors = useMemo(() => {
@@ -28,6 +29,37 @@ export const ProductInfo = ({ product }: { product: ProductDetails }) => {
   );
   const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+
+  const selectedVariant = useMemo(() => {
+    if (!selectedColorHex) return null;
+
+    const match = product.variants.find(
+      (v) => v.colorHex === selectedColorHex && v.sizeId === selectedSizeId,
+    );
+
+    return match ?? null;
+  }, [product.variants, selectedColorHex, selectedSizeId]);
+
+  const optimistic = useMemo(() => {
+    if (!selectedVariant) return null;
+
+    return {
+      priceCents: selectedVariant.priceCents,
+      compareAtPriceCents: selectedVariant.compareAtPriceCents,
+      inventory: selectedVariant.inventory,
+
+      productId: product.id,
+      productName: product.name,
+      productSlug: product.slug,
+
+      size: selectedVariant.sizeLabel,
+      color: selectedVariant.colorName,
+
+      imageUrl: product.images[0]?.url ?? null,
+    };
+  }, [selectedVariant, product]);
+
+  const addToCart = useAddToCart(optimistic ?? undefined);
 
   const variantsForColor = useMemo(() => {
     if (!selectedColorHex) return [];
@@ -75,18 +107,17 @@ export const ProductInfo = ({ product }: { product: ProductDetails }) => {
     setSelectedSizeId(firstAvailable?.sizeId ?? sizesForColor[0].sizeId);
   }, [sizesForColor, selectedSizeId]);
 
-  const selectedVariant = useMemo(() => {
-    if (!selectedColorHex) return null;
-
-    const match = product.variants.find(
-      (v) => v.colorHex === selectedColorHex && v.sizeId === selectedSizeId,
-    );
-
-    return match ?? null;
-  }, [product.variants, selectedColorHex, selectedSizeId]);
-
   const selectedColorName =
     colors.find((c) => c.colorHex === selectedColorHex)?.colorName ?? null;
+
+  const handleAddToCart = () => {
+    if (!selectedVariant?.id) return;
+
+    addToCart.mutate({
+      variantId: selectedVariant.id,
+      quantity,
+    });
+  };
 
   return (
     <div className="space-y-2">
@@ -202,7 +233,7 @@ export const ProductInfo = ({ product }: { product: ProductDetails }) => {
       </div>
 
       <div className="mt-10 flex gap-4">
-        <Button variant="primary" className="flex-1">
+        <Button variant="primary" className="flex-1" onClick={handleAddToCart}>
           Add to Cart
         </Button>
 

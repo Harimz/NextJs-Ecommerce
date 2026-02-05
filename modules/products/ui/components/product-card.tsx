@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
 import { FilteredProduct } from "../../domains/product-reviews-schema";
+import { useMemo } from "react";
+import { useAddToCart } from "@/modules/cart/api/cart-mutations";
 
 export const ProductCard = ({
   product,

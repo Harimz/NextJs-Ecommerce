@@ -10,10 +10,12 @@ import { UserButtonSkeleton } from "@/modules/auth/ui/skeletons/user-button-skel
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCartUiStore } from "@/modules/cart/ui/stores/cart-ui-store";
 
 export const Navbar = () => {
   const { user, isLoading } = useUser();
   const { setTheme, theme } = useTheme();
+  const { open } = useCartUiStore();
   const [query, setQuery] = useState("");
   const router = useRouter();
 
@@ -59,6 +61,7 @@ export const Navbar = () => {
             size="icon"
             variant="outline"
             className="rounded-full cursor-pointer"
+            onClick={() => open()}
           >
             <ShoppingCart />
           </Button>

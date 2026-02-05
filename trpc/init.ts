@@ -50,3 +50,12 @@ export const adminProtectedProcedure = protectedProcedure.use(
     return next({ ctx: { ...ctx, auth: ctx.session } });
   },
 );
+
+export const publicProcedure = baseProcedure.use(({ ctx, next }) => {
+  return next({
+    ctx: {
+      ...ctx,
+      auth: ctx.session ?? null,
+    },
+  });
+});

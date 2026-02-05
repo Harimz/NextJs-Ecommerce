@@ -52,6 +52,22 @@ export const productFlagEnum = pgEnum("product_flag", [
   "BESTSELLER",
 ]);
 
+export const orderStatusEnum = pgEnum("order_status", [
+  "pending", // created, awaiting payment
+  "paid", // paid via Stripe
+  "fulfilled", // shipped/delivered
+  "canceled",
+  "refunded",
+]);
+
+export const paymentProviderEnum = pgEnum("payment_provider", ["stripe"]);
+
+export const cartStatusEnum = pgEnum("cart_status", [
+  "open",
+  "converted",
+  "abandoned",
+]);
+
 export const roles = pgEnum("roles", ["user", "admin"]);
 
 export const user = pgTable("user", {
@@ -469,3 +485,51 @@ export const productReviews = pgTable(
 export const productReviewsInsertSchema = createInsertSchema(productReviews);
 export const productReviewsUpdateSchema = createUpdateSchema(productReviews);
 export const productReviewsSelectSchema = createSelectSchema(productReviews);
+
+export const carts = pgTable("carts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  userId: uuid("user_id"),
+  status: cartStatusEnum("status").notNull().default("open"),
+
+  currency: text("currency").notNull().default("usd"),
+
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const cartsInsertSchema = createInsertSchema(carts);
+export const cartsUpdateSchema = createUpdateSchema(carts);
+export const cartsSelectSchema = createSelectSchema(carts);
+
+export const cartItems = pgTable(
+  "cart_items",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    cartId: uuid("cart_id")
+      .notNull()
+      .references(() => carts.id, { onDelete: "cascade" }),
+    variantId: uuid("variant_id")
+      .notNull()
+      .references(() => productVariants.id, { onDelete: "restrict" }),
+
+    quantity: integer("quantity").notNull(),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [uniqueIndex("cart_items_cart_variant_uq").on(t.cartId, t.variantId)],
+);
+
+export const cartItemsInsertSchema = createInsertSchema(cartItems);
+export const cartItemsUpdateSchema = createUpdateSchema(cartItems);
+export const cartItemsSelectSchema = createSelectSchema(cartItems);
