@@ -64,7 +64,6 @@ export const categoriesRouter = createTRPCRouter({
       const tree = buildCategoryTree(rows);
       const parsed = z.array(categoryNodeSchema).safeParse(tree);
       if (!parsed.success) {
-        console.log(parsed.error.format());
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Bad output shape",

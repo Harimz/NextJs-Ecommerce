@@ -59,7 +59,6 @@ export const CreateTagDialog = () => {
   );
 
   const handleSubmit = (values: CreateTagInput) => {
-    console.log(values);
     createTag(values);
   };
 

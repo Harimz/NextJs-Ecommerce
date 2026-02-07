@@ -47,7 +47,6 @@ export const LoginForm = () => {
     }
 
     setIsLoading(false);
-    console.log(isLoading);
   };
 
   return (

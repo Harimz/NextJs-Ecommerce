@@ -11,6 +11,7 @@ import {
   integer,
   numeric,
   primaryKey,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 import {
@@ -66,6 +67,19 @@ export const cartStatusEnum = pgEnum("cart_status", [
   "open",
   "converted",
   "abandoned",
+]);
+
+export const orderEventProviderEnum = pgEnum("order_event_provider", [
+  "stripe",
+]);
+
+export const orderEventTypeEnum = pgEnum("order_event_type", [
+  "checkout_session_created",
+  "checkout_session_completed",
+  "payment_succeeded",
+  "payment_failed",
+  "order_cancelled",
+  "refund_created",
 ]);
 
 export const roles = pgEnum("roles", ["user", "admin"]);
@@ -533,3 +547,112 @@ export const cartItems = pgTable(
 export const cartItemsInsertSchema = createInsertSchema(cartItems);
 export const cartItemsUpdateSchema = createUpdateSchema(cartItems);
 export const cartItemsSelectSchema = createSelectSchema(cartItems);
+
+export const orders = pgTable(
+  "orders",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    userId: uuid("user_id"),
+    email: text("email"),
+    status: orderStatusEnum("status").notNull().default("pending"),
+
+    currency: text("currency").notNull().default("usd"),
+
+    subtotalCents: integer("subtotal_cents").notNull().default(0),
+    discountCents: integer("discount_cents").notNull().default(0),
+    shippingCents: integer("shipping_cents").notNull().default(0),
+    taxCents: integer("tax_cents").notNull().default(0),
+    totalCents: integer("total_cents").notNull().default(0),
+
+    paymentProvider: paymentProviderEnum("payment_provider")
+      .notNull()
+      .default("stripe"),
+
+    stripeCheckoutSessionId: text("stripe_checkout_session_id"),
+    stripePaymentIntentId: text("stripe_payment_intent_id"),
+
+    shippingName: text("shipping_name"),
+    shippingLine1: text("shipping_line1"),
+    shippingLine2: text("shipping_line2"),
+    shippingCity: text("shipping_city"),
+    shippingState: text("shipping_state"),
+    shippingPostal: text("shipping_postal"),
+    shippingCountry: text("shipping_country"),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    paidAt: timestamp("paid_at", { withTimezone: true }),
+  },
+  (t) => [
+    uniqueIndex("orders_stripe_session_uq").on(t.stripeCheckoutSessionId),
+  ],
+);
+
+export const ordersInsertSchema = createInsertSchema(orders);
+export const ordersUpdateSchema = createUpdateSchema(orders);
+export const ordersSelectSchema = createSelectSchema(orders);
+
+export const orderItems = pgTable("order_items", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "restrict" }),
+  variantId: uuid("variant_id")
+    .notNull()
+    .references(() => productVariants.id, { onDelete: "restrict" }),
+
+  nameSnapshot: text("name_snapshot").notNull(),
+  variantSnapshot: text("variant_snapshot"),
+  skuSnapshot: text("sku_snapshot"),
+  unitPriceCentsSnapshot: integer("unit_price_cents_snapshot").notNull(),
+
+  quantity: integer("quantity").notNull(),
+  lineTotalCents: integer("line_total_cents").notNull(),
+
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const orderItemsInsertSchema = createInsertSchema(orderItems);
+export const orderItemsUpdateSchema = createUpdateSchema(orderItems);
+export const orderItemsSelectSchema = createSelectSchema(orderItems);
+
+export const orderEvents = pgTable(
+  "order_events",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+
+    provider: orderEventProviderEnum("provider").notNull(),
+    type: orderEventTypeEnum("type").notNull(),
+
+    message: text("message"),
+
+    payload: jsonb("payload").$type<Record<string, unknown>>(),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [
+    index("order_events_order_idx").on(t.orderId),
+    index("order_events_type_idx").on(t.type),
+  ],
+);
+
+export const orderEventsInsertSchema = createInsertSchema(orderEvents);
+export const orderEventsUpdateSchema = createUpdateSchema(orderEvents);
+export const orderEventsSelectSchema = createSelectSchema(orderEvents);

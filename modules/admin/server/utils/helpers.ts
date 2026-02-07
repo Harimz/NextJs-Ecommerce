@@ -13,7 +13,6 @@ type FlatCategoryRow = {
 function toValidDate(value: Date | string) {
   const d = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(d.getTime())) {
-    console.log("Bad createdAt value:", value);
     throw new Error(`Invalid createdAt: ${String(value)}`);
   }
   return d;
