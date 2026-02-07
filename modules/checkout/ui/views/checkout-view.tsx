@@ -1,4 +1,3 @@
-import React from "react";
 import { CheckoutSection } from "../sections/checkout-section";
 
 export const CheckoutView = () => {
