@@ -25,7 +25,7 @@ export const ProductsView = () => {
   });
 
   return (
-    <main className="min-h-screen relative mx-auto max-w-400 w-[90%]">
+    <main className="min-h-screen relative mx-auto max-w-400 w-[90%] mb-20">
       <div className="container py-8">
         <h1 className="font-display text-3xl md:text-4xl font-semibold tracking-tight">
           All Products

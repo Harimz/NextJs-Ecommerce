@@ -1,7 +1,12 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Instagram, Twitter, Facebook } from "lucide-react";
+import { Instagram, Twitter, Facebook, Sun, Moon } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import React from "react";
 
 const footerLinks = {
   shop: [
@@ -25,9 +30,16 @@ const footerLinks = {
 };
 
 export const Footer = () => {
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => setMounted(true), []);
+
+  const current = (resolvedTheme ?? theme) as "light" | "dark" | undefined;
+
   return (
     <footer className="border-t border-border bg-secondary/30">
-      <div className=" mx-auto max-w-400 w-[95%] py-12 md:py-16">
+      <div className="mx-auto max-w-400 w-[95%] py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
@@ -35,10 +47,12 @@ export const Footer = () => {
                 HTAILORS
               </span>
             </Link>
+
             <p className="text-sm text-muted-foreground mb-6 max-w-sm">
               Timeless pieces crafted with care. Subscribe for exclusive access
               to new collections and special offers.
             </p>
+
             <form className="flex gap-2 max-w-sm">
               <Input
                 type="email"
@@ -49,6 +63,58 @@ export const Footer = () => {
                 Subscribe
               </Button>
             </form>
+
+            <div className="flex items-center gap-6 mt-6">
+              {!mounted ? (
+                // Neutral placeholder to avoid SSR/client mismatch
+                <>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="rounded-full"
+                    disabled
+                  >
+                    <Sun />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="rounded-full"
+                    disabled
+                  >
+                    <Moon />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className={cn(
+                      "rounded-full",
+                      current === "light" && "bg-muted",
+                    )}
+                    onClick={() => setTheme("light")}
+                    type="button"
+                  >
+                    <Sun />
+                  </Button>
+
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className={cn(
+                      "rounded-full",
+                      current === "dark" && "bg-muted",
+                    )}
+                    onClick={() => setTheme("dark")}
+                    type="button"
+                  >
+                    <Moon />
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
 
           <div>

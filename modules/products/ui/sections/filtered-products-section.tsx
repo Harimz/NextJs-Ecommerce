@@ -43,8 +43,14 @@ export const FilteredProductsSection = () => {
     <div className="w-full">
       {query.isFetching && <DisplayProductsSkeleton count={16} />}
 
+      {products.length === 0 && (
+        <p className="text-center text-muted-foreground mt-20">
+          No products found
+        </p>
+      )}
+
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
         className={`grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mt-6 ${

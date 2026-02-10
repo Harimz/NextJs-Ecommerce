@@ -15,5 +15,6 @@ export const useCart = () => {
     items,
     subtotalCents,
     totalItems,
+    isPending: query.isPending,
   };
 };

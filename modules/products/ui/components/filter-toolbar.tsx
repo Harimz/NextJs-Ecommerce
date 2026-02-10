@@ -6,7 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { SlidersHorizontal, X } from "lucide-react";
 import React, { useState } from "react";
 import { FilterSidebar } from "./filter-sidebar";
@@ -28,6 +33,7 @@ export const FilterToolbar = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-80 p-0">
+              <SheetTitle></SheetTitle>
               <div className="p-6 border-b">
                 <h2 className="font-display text-lg font-semibold">Filters</h2>
               </div>
@@ -36,17 +42,6 @@ export const FilterToolbar = () => {
               </div>
             </SheetContent>
           </Sheet>
-
-          <span className="text-sm text-muted-foreground">0 products</span>
-
-          {/* <Button
-            variant="ghost"
-            size="sm"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Clear all
-            <X className="h-3 w-3 ml-1" />
-          </Button> */}
         </div>
 
         <div className="flex items-center gap-3">

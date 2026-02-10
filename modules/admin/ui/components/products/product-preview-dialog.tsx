@@ -18,9 +18,9 @@ import { Color } from "@/modules/admin/domains/colors-schema";
 import { CreateProductFormValues } from "@/modules/admin/domains/products-schemas";
 import { Size } from "@/modules/admin/domains/sizes-schema";
 
-import { Eye, Heart, ShoppingCart, Star } from "lucide-react";
+import { Eye, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 interface Props {
@@ -31,33 +31,10 @@ interface Props {
 export const ProductPreviewDialog = ({ colors, sizes }: Props) => {
   const [open, setOpen] = useState(false);
   const { control } = useFormContext<CreateProductFormValues>();
-  const [variantIndex, setVariantIndex] = useState(0);
 
   const values = useWatch({ control });
 
   const images = values?.images ?? [];
-  const variants = values?.variants ?? [];
-  const selectedVariant = variants[variantIndex] ?? variants[0];
-
-  const colorName = useMemo(() => {
-    if (!colors || !selectedVariant?.colorId) return null;
-
-    return colors.find((c) => c.id === selectedVariant.colorId)?.name ?? null;
-  }, [colors, selectedVariant.colorId]);
-
-  const sizeName = useMemo(() => {
-    if (!sizes || !selectedVariant?.sizeId) return null;
-
-    return sizes.find((s) => s.id === selectedVariant.sizeId)?.label ?? null;
-  }, [sizes, selectedVariant?.sizeId]);
-
-  const formatMoney = (cents?: number | null) => {
-    if (!cents || cents <= 0) return "—";
-    return (cents / 100).toLocaleString(undefined, {
-      style: "currency",
-      currency: "USD",
-    });
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -172,9 +149,6 @@ export const ProductPreviewDialog = ({ colors, sizes }: Props) => {
             <div className="flex gap-4">
               <Button variant="primary" className="flex-1">
                 <ShoppingCart className="size-4" /> Add to Cart
-              </Button>
-              <Button size="icon" variant="outline">
-                <Heart className="size-4" />
               </Button>
             </div>
           </div>

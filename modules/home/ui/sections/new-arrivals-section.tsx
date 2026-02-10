@@ -33,7 +33,7 @@ const NewArrivalsSectionSuspense = () => {
     trpc.products.newArrivals.queryOptions(),
   );
 
-  const items = products.splice(0, 4);
+  const items = products.slice(0, 4);
 
   return (
     <motion.div
@@ -42,7 +42,7 @@ const NewArrivalsSectionSuspense = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mt-6"
     >
-      {items.splice(0, 4).map((product, i) => (
+      {items.map((product, i) => (
         <motion.div
           key={product.id}
           initial={{ opacity: 0, y: 8 }}

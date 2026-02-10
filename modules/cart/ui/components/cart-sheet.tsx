@@ -17,6 +17,7 @@ import { useCart } from "../../api/cart-queries";
 import { CartItemRow } from "./cart-item-row";
 import { Separator } from "@/components/ui/separator";
 import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
+import { CartSheetSkeleton } from "../skeletons/cart-sheet-skeleton";
 
 export const CartSheet = () => {
   const { isOpen, close, toggle } = useCartUiStore();
@@ -32,7 +33,7 @@ export const CartSheet = () => {
         </SheetHeader>
 
         {isOpen ? (
-          <Suspense fallback={<div>Loading cart…</div>}>
+          <Suspense fallback={<CartSheetSkeleton />}>
             <ErrorBoundary fallback={<div>Failed to load cart</div>}>
               <CartSheetBody onClose={close} />
             </ErrorBoundary>
@@ -46,7 +47,7 @@ export const CartSheet = () => {
 };
 
 function CartSheetBody({ onClose }: { onClose: () => void }) {
-  const { items, totalItems, subtotalCents } = useCart();
+  const { items, totalItems, subtotalCents, isPending } = useCart();
 
   if (items.length === 0) {
     return (

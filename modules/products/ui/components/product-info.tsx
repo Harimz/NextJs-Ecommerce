@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ProductDetails } from "../../../home/domains/product-schema";
-import { Heart, Minus, Plus, Star } from "lucide-react";
+import { Minus, Plus, Star } from "lucide-react";
 import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -244,10 +244,6 @@ export const ProductInfo = ({ product }: { product: ProductDetails }) => {
       <div className="mt-10 flex gap-4">
         <Button variant="primary" className="flex-1" onClick={handleAddToCart}>
           Add to Cart
-        </Button>
-
-        <Button size="icon" variant="outline">
-          <Heart />
         </Button>
       </div>
 

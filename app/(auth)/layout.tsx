@@ -1,7 +1,11 @@
 import React from "react";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="max-w-lg w-[90%] mx-auto mt-10">{children}</div>;
+  return (
+    <div className="max-w-lg w-[90%] mx-auto mt-10 min-h-screen">
+      {children}
+    </div>
+  );
 };
 
 export default AuthLayout;

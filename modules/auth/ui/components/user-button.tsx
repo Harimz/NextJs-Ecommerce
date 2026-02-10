@@ -12,7 +12,15 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronDown, LogOut, Scroll, Settings, Shield } from "lucide-react";
+import {
+  ChevronDown,
+  LogOut,
+  Scroll,
+  Settings,
+  Shield,
+  User,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const UserButton = () => {
   const { user } = useUser();
@@ -21,19 +29,29 @@ export const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex gap-4 items-center cursor-pointer">
-          <Avatar>
-            <AvatarImage src={user?.image ?? ""} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+        <div>
+          <div className="hidden md:flex gap-4 items-center cursor-pointer">
+            <Avatar>
+              <AvatarImage src={user?.image ?? ""} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
 
-          <div>
-            <p className="text-muted-foreground text-sm">Welcome Back!</p>
+            <div>
+              <p className="text-muted-foreground text-sm">Welcome Back!</p>
 
-            <h1 className="font-bold">{user?.name}</h1>
+              <h1 className="font-bold">{user?.name}</h1>
+            </div>
+
+            <ChevronDown className="size-4" />
           </div>
 
-          <ChevronDown className="size-4" />
+          <Button
+            variant="outline"
+            size="icon"
+            className="md:hidden rounded-full flex items-center justify-center"
+          >
+            <User />
+          </Button>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-50 p-2">

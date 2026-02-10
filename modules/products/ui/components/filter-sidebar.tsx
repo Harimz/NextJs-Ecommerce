@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Department, ProductType } from "../data";
 import {
   Collapsible,
@@ -13,6 +15,8 @@ import { Switch } from "@/components/ui/switch";
 import { useProductsFilter } from "../hooks/use-products-filter";
 import { useDebouncedValue } from "@/modules/shared/hooks/use-debounced-value";
 import { centsToDollars } from "@/modules/admin/ui/utils/helpers";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const departments: { value: Department; label: string }[] = [
   { value: "WOMEN", label: "Women" },
@@ -38,6 +42,8 @@ const MAX = 50000;
 const STEP = 1000;
 
 export const FilterSidebar = () => {
+  const [query, setQuery] = useState("");
+  const router = useRouter();
   const [openSections, setOpenSections] = useState({
     department: true,
     type: true,
@@ -69,9 +75,25 @@ export const FilterSidebar = () => {
     }
   }, [debouncedRange, filters.minPrice, filters.maxPrice, setFilters]);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const q = query.trim();
+    if (!q) router.push(`/products`);
+
+    router.push(`/products?q=${encodeURIComponent(q)}`);
+  };
+
   return (
     <aside className="space-y-6 w-full lg:w-64 lg:block">
-      {/* Department Filter */}
+      <form onSubmit={handleSubmit}>
+        <Input
+          value={query}
+          onChange={({ target }) => setQuery(target.value)}
+          placeholder="Search product..."
+        />
+      </form>
+
       <Collapsible
         open={openSections.department}
         onOpenChange={(open) =>
@@ -110,9 +132,7 @@ export const FilterSidebar = () => {
           ))}
         </CollapsibleContent>
       </Collapsible>
-
       <div className="border-t" />
-
       <Collapsible
         open={openSections.type}
         onOpenChange={(open) => setOpenSections((s) => ({ ...s, type: open }))}
@@ -149,9 +169,7 @@ export const FilterSidebar = () => {
           ))}
         </CollapsibleContent>
       </Collapsible>
-
       <div className="border-t" />
-
       <Collapsible
         open={openSections.price}
         onOpenChange={(open) => setOpenSections((s) => ({ ...s, price: open }))}
@@ -180,9 +198,7 @@ export const FilterSidebar = () => {
           </div>
         </CollapsibleContent>
       </Collapsible>
-
       <div className="border-t" />
-
       <div className="flex items-center justify-between py-2">
         <Label htmlFor="on-sale" className="text-sm font-medium cursor-pointer">
           On Sale

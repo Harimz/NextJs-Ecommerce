@@ -25,15 +25,15 @@ export const HomeView = () => {
 
           <CategoryGrid />
 
-          <div>
+          <PromoBanner />
+
+          <div className="mb-20">
             <p className="text-custom-primary">JUST LANDED</p>
 
             <h1 className="font-bold text-4xl">New Arrivals</h1>
 
             <NewArrivalsSection />
           </div>
-
-          <PromoBanner />
         </div>
       </div>
 

@@ -27,10 +27,6 @@ export const UserInfo = () => {
       <div>
         <div className="flex items-center gap-4">
           <h1 className="font-bold text-4xl">{user?.name}</h1>
-
-          <div className="bg-custom-primary/10 rounded-full flex items-center justify-center px-2">
-            <span className="text-custom-primary text-sm">Gold Member</span>
-          </div>
         </div>
         <p className="text-muted-foreground">{user?.email}</p>
         <p className="text-muted-foreground">
