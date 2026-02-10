@@ -1,8 +1,6 @@
-import { auth } from "@/lib/auth";
 import { ProductsDetailsView } from "@/modules/products/ui/views/product-details-view";
 import { getQueryClient, trpc } from "@/trpc/server";
-import { headers } from "next/headers";
-import React from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 const ProductDetailsPage = async ({
   params,
@@ -14,7 +12,11 @@ const ProductDetailsPage = async ({
 
   void qc.prefetchQuery(trpc.products.details.queryOptions({ slug }));
 
-  return <ProductsDetailsView slug={slug} />;
+  return (
+    <HydrationBoundary state={dehydrate(qc)}>
+      <ProductsDetailsView slug={slug} />
+    </HydrationBoundary>
+  );
 };
 
 export default ProductDetailsPage;

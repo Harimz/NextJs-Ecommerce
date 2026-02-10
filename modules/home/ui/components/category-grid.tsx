@@ -13,17 +13,17 @@ export const CategoryGrid = () => {
     <section className="py-12 md:py-16">
       <div className="mx-auto">
         <h1 className="font-display font-bold text-xl md:text-4xl text-center mb-8">
-          Shop by Category
+          Shop by Department
         </h1>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {categories.map((category) => (
             <Link
-              key={category.slug}
-              href={`/category/${category.slug}`}
+              key={category.href}
+              href={`${category.href}`}
               className="relative group aspect-3/4 overflow-hidden rounded-lg bg-muted"
             >
-              {!loadedImages[category.slug] && (
+              {!loadedImages[category.href] && (
                 <div className="absolute inset-0 skeleton-shimmer" />
               )}
               <Image
@@ -32,12 +32,12 @@ export const CategoryGrid = () => {
                 fill
                 className={cn(
                   "object-cover transition-transform duration-500 group-hover:scale-105",
-                  loadedImages[category.slug] ? "opacity-100" : "opacity-0",
+                  loadedImages[category.href] ? "opacity-100" : "opacity-0",
                 )}
                 onLoad={() =>
                   setLoadedImages((prev) => ({
                     ...prev,
-                    [category.slug]: true,
+                    [category.href]: true,
                   }))
                 }
               />

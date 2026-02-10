@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "../hooks/use-user";
 import Link from "next/link";
-import { Search, ShoppingCart, Sun } from "lucide-react";
+import { Moon, Search, ShoppingCart, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { UserButton } from "@/modules/auth/ui/components/user-button";
 import { UserButtonSkeleton } from "@/modules/auth/ui/skeletons/user-button-skeleton";
@@ -48,14 +48,14 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-10">
-          {/* <Button
+          <Button
             size="icon"
             variant="outline"
             className="rounded-full"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             {theme === "light" ? <Moon /> : <Sun />}
-          </Button> */}
+          </Button>
 
           <Button
             size="icon"

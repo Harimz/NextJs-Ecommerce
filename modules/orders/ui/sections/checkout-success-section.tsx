@@ -73,7 +73,7 @@ export const CheckoutSuccessSection = ({
         </p>
       </div>
 
-      <div className="bg-white rounded-sm p-6 border shadow-xs mt-10">
+      <div className="bg-white dark:bg-muted rounded-sm p-6 border shadow-xs mt-10">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="space-y-2 text-center md:text-start">
             <p className="text-muted-foreground">Order Number</p>
@@ -101,7 +101,7 @@ export const CheckoutSuccessSection = ({
 
       <Orderitems orderItems={items} orderDetails={order} />
 
-      <div className="bg-white rounded-sm p-6 border shadow-xs mt-10">
+      <div className="bg-white dark:bg-muted rounded-sm p-6 border shadow-xs mt-10">
         <h1 className="font-bold text-xl mb-2">Shipping Address</h1>
 
         {order.shippingLine1 ? (
@@ -123,7 +123,7 @@ export const CheckoutSuccessSection = ({
 
       <div className="flex items-center justify-center gap-4 mt-6">
         <Button variant="outline" asChild>
-          <Link href="/orders">View Order History</Link>
+          <Link href="/profile">View Order History</Link>
         </Button>
         <Button variant="primary" asChild>
           <Link href="/products">Continue Shopping</Link>

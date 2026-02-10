@@ -1,5 +1,6 @@
 import { CheckoutSuccessView } from "@/modules/orders/ui/views/checkout-success-view";
 import { getQueryClient, trpc } from "@/trpc/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import React from "react";
 
 const CheckoutSuccessPage = async ({
@@ -19,7 +20,11 @@ const CheckoutSuccessPage = async ({
     );
   }
 
-  return <CheckoutSuccessView sessionId={session_id} />;
+  return (
+    <HydrationBoundary state={dehydrate(qc)}>
+      <CheckoutSuccessView sessionId={session_id} />
+    </HydrationBoundary>
+  );
 };
 
 export default CheckoutSuccessPage;

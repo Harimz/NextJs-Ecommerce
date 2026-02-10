@@ -54,8 +54,10 @@ export const ProductReviews = ({ productId }: Props) => {
   const productReviews = data?.items ?? [];
 
   const averageRating =
-    productReviews.reduce((acc, r) => acc + r.rating, 0) /
-    productReviews.length;
+    productReviews.length === 0
+      ? 0
+      : productReviews.reduce((acc, r) => acc + r.rating, 0) /
+        productReviews.length;
 
   const ratingDistribution = [5, 4, 3, 2, 1].map((stars) => ({
     stars,

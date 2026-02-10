@@ -24,6 +24,8 @@ export const ProductInfo = ({ product }: { product: ProductDetails }) => {
     );
   }, [product.variants]);
 
+  const filledStars = Math.round(+product.ratingAvg);
+
   const [selectedColorHex, setSelectedColorHex] = useState<string | null>(
     colors[0]?.colorHex ?? null,
   );
@@ -129,7 +131,14 @@ export const ProductInfo = ({ product }: { product: ProductDetails }) => {
 
       <div className="flex gap-1 items-center">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className="size-4" />
+          <Star
+            key={i}
+            className={`size-4 ${
+              i < filledStars
+                ? "fill-yellow-400 text-yellow-400"
+                : "text-muted-foreground"
+            }`}
+          />
         ))}
       </div>
 

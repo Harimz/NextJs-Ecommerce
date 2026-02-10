@@ -5,6 +5,7 @@ import { productsRouter } from "./routers/products-router";
 import { colorsRouter } from "./routers/colors-router";
 import { sizesRouter } from "./routers/sizes-router";
 import { productImagesRouter } from "./routers/product-images-router";
+import { analyticsRouter } from "./routers/analytics-router";
 
 export const adminRouter = createTRPCRouter({
   categories: categoriesRouter,
@@ -13,4 +14,5 @@ export const adminRouter = createTRPCRouter({
   colors: colorsRouter,
   sizes: sizesRouter,
   productImages: productImagesRouter,
+  analytics: analyticsRouter,
 });

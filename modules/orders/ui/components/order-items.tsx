@@ -16,7 +16,7 @@ export const Orderitems = ({
   orderDetails: OrderDetailsOutput;
 }) => {
   return (
-    <div className="bg-white rounded-sm p-6 border shadow-xs mt-6">
+    <div className="bg-white dark:bg-muted rounded-sm p-6 border shadow-xs mt-6">
       <div className="flex items-center gap-2 mb-6">
         <Package />
 

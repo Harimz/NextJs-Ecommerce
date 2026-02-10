@@ -8,7 +8,7 @@ interface Props {
 
 export const OrderSummary = ({ cartItems }: Props) => {
   return (
-    <div className="flex-1 shadow-sm border rounded-md bg-white p-6">
+    <div className="flex-1 shadow-sm border rounded-md bg-white dark:bg-muted p-6">
       <h1 className="font-bold text-3xl mb-6">Order Summary</h1>
 
       <div className="space-y-6">

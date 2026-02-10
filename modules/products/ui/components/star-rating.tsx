@@ -44,7 +44,7 @@ export const StarRating = ({
               className={cn(
                 starSize,
                 isFilled
-                  ? "fill-custom-primary text-custom-primary"
+                  ? "fill-yellow-400 text-yellow-400"
                   : "text-muted-foreground/40",
               )}
             />

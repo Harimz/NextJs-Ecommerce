@@ -2,6 +2,7 @@ import {
   baseProcedure,
   createTRPCRouter,
   protectedProcedure,
+  publicProcedure,
 } from "@/trpc/init";
 
 import { db } from "@/db";
@@ -53,16 +54,20 @@ export const productReviewsRouter = createTRPCRouter({
     };
   }),
 
-  mine: protectedProcedure
+  mine: publicProcedure
     .input(deleteReviewInput)
     .query(async ({ input, ctx }) => {
+      const userId = ctx.auth?.user?.id;
+
+      if (!userId) return null;
+
       const [row] = await db
         .select()
         .from(productReviews)
         .where(
           and(
             eq(productReviews.productId, input.productId),
-            eq(productReviews.userId, ctx.auth.user.id),
+            eq(productReviews.userId, userId),
           ),
         );
 

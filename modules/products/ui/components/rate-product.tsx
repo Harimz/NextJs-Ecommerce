@@ -40,14 +40,14 @@ const UserReviewDisplay = ({
       </div>
 
       <div className="flex items-center gap-2">
-        <StarRating rating={review.rating} size="sm" />
+        <StarRating rating={review?.rating ?? 0} size="sm" />
         <span className="text-sm text-muted-foreground">
-          {review.rating} / 5
+          {review?.rating} / 5
         </span>
       </div>
 
-      {review.title && <p className="font-medium">{review.title}</p>}
-      {review.body && (
+      {review?.title && <p className="font-medium">{review.title}</p>}
+      {review?.body && (
         <p className="text-sm text-muted-foreground">{review.body}</p>
       )}
     </div>
@@ -153,10 +153,10 @@ export const RateProduct = ({
           {ratingDistribution.map(({ stars, count, percentage }) => (
             <div key={stars} className="flex items-center gap-3">
               <span className="text-sm w-3">{stars}</span>
-              <Star className="h-4 w-4 fill-custom-primary text-custom-primary" />
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
               <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-custom-primary rounded-full transition-all"
+                  className="h-full bg-yellow-400 rounded-full transition-all"
                   style={{ width: `${percentage}%` }}
                 />
               </div>

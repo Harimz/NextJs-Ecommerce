@@ -1,6 +1,4 @@
-import React from "react";
 import { ProductDetailsSection } from "../sections/product-details-section";
-import { User } from "better-auth";
 
 interface Props {
   slug: string;

@@ -13,10 +13,11 @@ import { Separator } from "@/components/ui/separator";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { useCreateCheckoutSession } from "../../api/checkout-mutations";
+import { CheckoutSectionSkeleton } from "../skeletons/checkout-section-skeleton";
 
 export const CheckoutSection = () => {
   return (
-    <Suspense fallback="Loading">
+    <Suspense fallback={<CheckoutSectionSkeleton />}>
       <ErrorBoundary
         FallbackComponent={({ error, resetErrorBoundary }) => (
           <GeneralDisplayError
@@ -64,7 +65,7 @@ const CheckoutSectionSuspense = () => {
       <div className="flex flex-col md:flex-row gap-6">
         <OrderSummary cartItems={cartItems} />
 
-        <div className="w-[30%] shadow-sm border rounded-md bg-white p-6">
+        <div className="w-[30%] shadow-sm border rounded-md bg-white dark:bg-muted p-6">
           <h1 className="font-bold text-2xl mb-4">Payment</h1>
 
           <div className="space-y-4 text-muted-foreground">

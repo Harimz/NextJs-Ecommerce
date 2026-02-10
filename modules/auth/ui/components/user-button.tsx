@@ -41,15 +41,13 @@ export const UserButton = () => {
           <DropdownMenuLabel className="text-muted-foreground text-sm">
             My Account
           </DropdownMenuLabel>
-          <DropdownMenuItem>
-            <Scroll />
-            <p className="mt-1">Orders</p>
-          </DropdownMenuItem>
 
-          <DropdownMenuItem>
-            <Settings />
-            <p className="mt-1">Settings</p>
-          </DropdownMenuItem>
+          <Link href="/profile">
+            <DropdownMenuItem>
+              <Scroll />
+              <p className="mt-1">Profile</p>
+            </DropdownMenuItem>
+          </Link>
 
           {user?.role === "admin" && (
             <Link href="/admin/dashboard" passHref>
