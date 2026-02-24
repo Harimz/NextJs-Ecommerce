@@ -56,6 +56,10 @@ This project is a full-stack e-commerce application built with Next.js App Route
 
 ## Architecture Overview
 
+### Storefront Diagram
+
+![Storefront Architecture](./storefront-diagram.svg)
+
 ### Project Structure
 
 ```text
