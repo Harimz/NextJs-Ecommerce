@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Minus, Plus, X } from "lucide-react";
 import {
   centsToDollars,
-  dollarsToCents,
 } from "@/modules/admin/ui/utils/helpers";
 import {
   useRemoveCartItem,
