@@ -58,6 +58,7 @@ This project is a full-stack e-commerce application built with Next.js App Route
 
 ### Storefront Diagram
 
+[Design Diagram](https://excalidraw.com/#json=DwkBqCZzbvUTDImer_NTI,Iv3nZg8vsQ-uTpHCzZyxGQ)
 ![Storefront Architecture](./storefront-diagram.svg)
 
 ### Project Structure
